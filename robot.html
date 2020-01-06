@@ -2,6 +2,9 @@
 <html>
 <head>
 	<title>Robot Problems</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
 	<style type="text/css">
 		* {
 			box-sizing: border-box;
@@ -13,7 +16,7 @@
 			padding: 0px;
 			background: linear-gradient(135deg, darkblue, turquoise);
 			background-size: cover;
-			height: 100vh;
+			min-height: 100vh;
 		}
 		
 		h1, h2 {
@@ -95,14 +98,72 @@
 		li.directions > span {
 			color: darkorange;
 		}
+
+		.control {
+			width: 100px;
+			margin: 0px;
+		}
+		.button_zone {
+			margin: auto;
+			width: 150px;
+			display: grid;
+			grid-template-columns: auto auto;
+			grid-template-rows: auto auto;
+			grid-gap: 5px;
+			grid-template-areas: 
+				"up up"
+				"left right";
+			align-content: center;
+			align-items: center;
+			justify-content: center;
+		}
+
+		#up {
+			grid-area: up;
+			display: block;
+			margin: auto;
+		}
+
+		@media only screen and (max-width: 500px) {
+			body {
+				margin: 0px;
+				padding: 0px;
+			}
+
+			.main {
+				display: grid;
+				justify-content: center;
+				align-items: center;
+				align-content: center;
+			}
+
+			.content {
+				border: 0px;
+				display: block;
+				width: 100vw;
+				min-width: 0px;
+				margin: auto;
+				min-height: 100vh;
+			}
+
+			p {
+				width: 80vw;
+			}
+
+			canvas {
+
+			}
+		}
 	</style>
 </head>
 <body>
 
-	<div>
+	<div class="main">
 		<div class="content">
 			<h1>Robot Problems</h1>
 			<p class="directions"><span>Directions:</span> Use the arrow keys to move the robot around the canvas (grid). To delete the old canvas and create a new canvas, edit the dimensions and press the <span>Generate Canvas</span> button.</p><br>
+			<p class="directions">If you are using a mobile device or do not have access to a keyboard, some controling buttons have been provided below the canvas (grid).</p>
+			<br>
 			<ul class="directions">
 				<li class="directions"><span>Up Arrow</span>: MOVE_FORWARD()</li>
 				<li class="directions"><span>Left Arrow</span>: ROTATE_LEFT()</li>
@@ -110,12 +171,15 @@
 			</ul>
 			<p>Width: <input type="text" id="width"></p>
 			<p>Height: <input type="text" id="height"></p>
-			<button>Generate Canvas</button>
+			<button id="generate">Generate Canvas</button>
 			<canvas></canvas>
+			<div class="button_zone">
+				<button class="control" id="up">Move Forward</button>
+				<button class="control" id="left">Rotate Left</button>
+				<button class="control" id="right">Rotate Right</button>
+			</div>
 		</div>
 	</div>
-
-	<script type="text/javascript" src="http://cdn.jsdelivr.net/gh/CaryACTvF/toolbox@da2f010/aptools.js"></script>
 
 	<script type="text/javascript">
 
@@ -124,19 +188,21 @@
 		ctx.fillStyle = "black";
 
 		let grid_space = 25;
-		let height_spaces = 10;
-		let width_spaces = 20;
+		let height_spaces = 5;
+		let width_spaces = 10;
 		canvas.width = grid_space * width_spaces;
 		canvas.height = grid_space * height_spaces;
 
-
-
-		let button = document.querySelector("button");
+		let generate = document.querySelector("#generate");
 		let width_input = document.querySelector("#width");
 		let height_input = document.querySelector("#height");
 
+		let up = document.querySelector("#up");
+		let left = document.querySelector("#left");
+		let right = document.querySelector("#right");
 
-		button.addEventListener("click", function() {
+
+		generate.addEventListener("click", function() {
 			height_spaces = height_input.value;
 			width_spaces = width_input.value;
 			canvas.width = grid_space * width_spaces;
@@ -250,6 +316,18 @@
 			else if (e.key == "ArrowLeft") {
 				sprite.rotateLeft();
 			}
+		})
+
+		up.addEventListener("click", function() {
+			sprite.moveForward();
+		})
+
+		left.addEventListener("click", function() {
+			sprite.rotateLeft();
+		})
+
+		right.addEventListener("click", function() {
+			sprite.rotateRight();
 		})
 	</script>
 </body>
